@@ -57,3 +57,23 @@ spec:
       resources:
         requests:
           storage: 1Gi
+
+---
+piVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: expense
+  labels:
+    app: mysql
+    project: expense
+    tier: db
+spec:
+  selector:
+    app: mysql
+    project: expense
+    tier: db
+  ports:
+  - protocol: TCP
+    port: 3306 # service port
+    targetPort: 3306

@@ -1,0 +1,48 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+  name: backend 
+  namespace: expense
+data: 
+  DB_HOST: mysql 
+
+---
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:   
+  name: backend 
+  namespace: expense 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels:
+      app: nodejs
+      tier: backend
+      project: expense 
+  template:
+    metadata:
+      labels:
+        app: nodejs
+        tier: backend
+        project: expense
+    spec:
+      containers:
+      - name: backend
+        image: santhoshdatti/backend:1.0.0
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend
+  namespace: expense
+spec:
+  selector: # labels are used as selectors
+    app: nodejs
+    tier: backend
+    project: expense
+  ports:
+  - protocol: TCP
+    port: 8080 # service port
+    targetPort: 8080
+
